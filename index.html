@@ -1,58 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Escenario con Three.js y modelo .obj</title>
-    <style>
-        body { margin: 0; }
-        canvas { display: block; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Three.js Scene with OBJ Model</title>
+  <style>
+    body { margin: 0; }
+    canvas { display: block; }
+  </style>
+  <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.133.2/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.133.2/examples/jsm/"
+      }
+    }
+  </script>
 </head>
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/objloader.min.js"></script>
-    <script>
-        // Configuración básica
-        var scene = new THREE.Scene();
-        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        var renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
+  <script type="module">
+    import * as THREE from 'three';
+    import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
-        // Cargar el modelo .obj
-        var loader = new THREE.OBJLoader();
-        loader.load(
-            'suzuki_gsx_750\Srad 750.obj',
-            function (object) {
-                scene.add(object);
-            },
-            function (xhr) {
-                console.log((xhr.loaded / xhr.total * 100) + '% cargado');
-            },
-            function (error) {
-                console.log('Error al cargar el modelo .obj');
-            }
-        );
+    // Configurar el lienzo
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-        // Agregar luces
-        var ambientLight = new THREE.AmbientLight(0x404040, 2);
-        scene.add(ambientLight);
+    // Cargar el modelo OBJ
+    const objLoader = new OBJLoader();
+    objLoader.load('suzuki_gsx_750\Srad 750.obj', (object) => {
+      scene.add(object);
+    });
 
-        var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-        directionalLight.position.set(1, 1, 0);
-        scene.add(directionalLight);
+    // Configurar la posición de la cámara
+    camera.position.z = 5;
 
-        // Configurar posición de la cámara
-        camera.position.z = 5;
+    // Animación de la escena
+    function animate() {
+      requestAnimationFrame(animate);
+      // Rotar el modelo o realizar otras operaciones de animación
+      // ...
 
-        // Función de animación
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-        }
+      renderer.render(scene, camera);
+    }
 
-        // Llamar a la función de animación
-        animate();
-    </script>
+    animate();
+  </script>
 </body>
 </html>
