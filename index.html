@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Escenario 3D con GLTF</title>
+    <title>Escenario 3D con GLTF y contrles de teclas</title>
     <style>
       body {
         margin: 0;
@@ -33,9 +33,39 @@
 
       // Carga del modelo GLTF
       var loader = new THREE.GLTFLoader();
-      loader.load('aerial-rocks-3d-model/aerial_rocks_02_4k.gltf', function (gltf) {
+      loader.load('ruta/al/modelo.gltf', function (gltf) {
         scene.add(gltf.scene);
       });
+
+      // Manejo de eventos de teclado
+      var moveSpeed = 0.1;
+      var rotationSpeed = 0.05;
+
+      function handleKeyDown(event) {
+        var keyCode = event.keyCode;
+        switch (keyCode) {
+          case 87: // W
+            camera.position.z -= moveSpeed;
+            break;
+          case 83: // S
+            camera.position.z += moveSpeed;
+            break;
+          case 65: // A
+            camera.position.x -= moveSpeed;
+            break;
+          case 68: // D
+            camera.position.x += moveSpeed;
+            break;
+          case 37: // Left arrow
+            camera.rotation.y += rotationSpeed;
+            break;
+          case 39: // Right arrow
+            camera.rotation.y -= rotationSpeed;
+            break;
+        }
+      }
+
+      window.addEventListener('keydown', handleKeyDown, false);
 
       // Animación y renderizado
       function animate() {
