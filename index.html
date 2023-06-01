@@ -1,54 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Three.js Scene with OBJ Model</title>
-  <style>
-    body { margin: 0; }
-    canvas { display: block; }
-  </style>
-  <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://unpkg.com/three@0.133.2/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@0.133.2/examples/jsm/"
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Escenario Three.js</title>
+    <style>
+      body {
+        margin: 0;
       }
-    }
-  </script>
-</head>
-<body>
-  <script type="module">
-    import * as THREE from 'three';
-    import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+    </style>
+  </head>
+  <body>
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
 
-    // Configurar el lienzo
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.133.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.133.0/examples/jsm/"
+        }
+      }
+    </script>
 
-    // Cargar el modelo OBJ
-    const objLoader = new OBJLoader();
-    objLoader.load('suzuki_gsx_750\Srad 750.obj', (object) => {
-      scene.add(object);
-    });
+    <script type="module">
+      import * as THREE from 'three';
+      import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-    // Configurar la posición de la cámara
-    camera.position.z = 5;
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
 
-    // Animación de la escena
-    function animate() {
-      requestAnimationFrame(animate);
-      // Rotar el modelo o realizar otras operaciones de animación
-      // ...
+      const loader = new GLTFLoader();
+      loader.load('aerial-rocks-3d-model\aerial_rocks_02_4k.gltf', function(gltf) {
+        const model = gltf.scene;
+        scene.add(model);
+      });
 
-      renderer.render(scene, camera);
-    }
+      camera.position.z = 5;
 
-    animate();
-  </script>
-</body>
+      function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    </script>
+  </body>
 </html>
